@@ -47,10 +47,10 @@ export default function AuthLayout({ children }) {
   const features = ['matches', 'players', 'reports'];
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
-      <aside className="pitch-lines relative hidden overflow-hidden bg-[#0b1220] text-white lg:flex lg:flex-col lg:justify-between lg:p-12 xl:p-16">
+      <aside className="pitch-lines relative hidden overflow-hidden bg-[#0b1220] text-white lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:p-12 xl:p-16">
         <div className="absolute -right-40 -top-40 size-[520px] rounded-full bg-brand-500/15 blur-3xl" aria-hidden="true" />
         <div className="absolute -bottom-48 -left-24 size-[420px] rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true" />
-        <BrandLogo inverted className="relative" />
+        <BrandLogo inverted compact size="2xl" className="relative" />
         <div className="relative max-w-xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-300">{t('auth.hero.eyebrow')}</p>
           <h1 className="mt-4 font-display text-5xl font-bold leading-[1.02] tracking-tight xl:text-6xl">{t('auth.hero.title')}</h1>
@@ -77,7 +77,7 @@ export default function AuthLayout({ children }) {
           <div className="pitch-lines absolute inset-0 opacity-[0.35] [mask-image:linear-gradient(to_bottom,black,transparent)] dark:opacity-100" />
         </div>
         <div className="flex items-center justify-between gap-3 p-4 sm:p-6">
-          <BrandLogo className="lg:invisible" />
+          <BrandLogo size="lg" className="lg:invisible" />
           <div className="flex items-center gap-1">
             <ThemeToggle />
             <LanguageSwitcher variant="pill" />

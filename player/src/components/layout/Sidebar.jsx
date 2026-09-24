@@ -31,7 +31,7 @@ export default function Sidebar({ onNavigate, onLogout, collapsed = false, class
 
   return (
     <div className={cn('flex h-full flex-col bg-[#0b1220] bg-[radial-gradient(130%_45%_at_0%_0%,rgb(18_178_142/0.16),transparent_62%)] text-slate-300', className)}>
-      <div className={cn('flex h-16 shrink-0 items-center', collapsed ? 'justify-center' : 'px-5')}>{collapsed ? <BrandMark /> : <BrandLogo inverted />}</div>
+      <div className={cn('flex h-20 shrink-0 items-center', collapsed ? 'justify-center' : 'px-5')}>{collapsed ? <BrandMark size="md" /> : <BrandLogo inverted size="nav" />}</div>
 
       <nav aria-label={t('nav.main')} className={cn('flex-1 pb-4 no-scrollbar', collapsed ? 'overflow-visible px-2' : 'overflow-y-auto px-3')}>
         {NAV_GROUPS.map((group) => (

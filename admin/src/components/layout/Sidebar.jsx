@@ -16,8 +16,8 @@ export default function Sidebar({ onNavigate, onLogout, className }) {
 
   return (
     <div className={cn('flex h-full flex-col bg-[#0b1220] bg-[radial-gradient(130%_45%_at_0%_0%,rgb(18_178_142/0.16),transparent_62%)] text-slate-300', className)}>
-      <div className="flex h-16 shrink-0 items-center px-5">
-        <BrandLogo inverted />
+      <div className="flex h-20 shrink-0 items-center px-5">
+        <BrandLogo inverted size="nav" />
       </div>
 
       <nav aria-label={t('nav.main')} className="flex-1 overflow-y-auto px-3 pb-4 no-scrollbar">

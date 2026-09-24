@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LogOut, Menu, Moon, PanelLeftClose, PanelLeftOpen, Search, Settings, Sun, UserRound } from 'lucide-react';
+import { LogoImage } from '@/components/common/BrandLogo';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import ThemeToggle from '@/components/common/ThemeToggle';
 import Avatar from '@/components/ui/Avatar';
@@ -48,7 +49,10 @@ export default function Topbar({ onMenu, onSearch, onLogout, collapsed, onToggle
           {collapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}
         </button>
 
-        <p className="min-w-0 flex-1 truncate text-base font-semibold text-ink lg:flex-none lg:text-lg">{section ? t(`nav.${section.key}`) : ''}</p>
+        <Link to="/player/dashboard" className="flex min-w-0 flex-1 items-center md:hidden" aria-label={t('nav.dashboard')}>
+          <LogoImage tone="auto" size="md" />
+        </Link>
+        <p className="hidden min-w-0 flex-1 truncate text-base font-semibold text-ink md:block lg:flex-none lg:text-lg">{section ? t(`nav.${section.key}`) : ''}</p>
 
         <button
           type="button"

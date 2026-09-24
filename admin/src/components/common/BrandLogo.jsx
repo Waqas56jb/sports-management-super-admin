@@ -1,27 +1,63 @@
 import { useI18n } from '@/i18n';
-import { APP_NAME } from '@/utils/constants';
 import { cn } from '@/utils/cn';
 
-export function BrandMark({ className }) {
+/**
+ * The WOLF logo. The artwork is white-on-black, so two transparent versions are shipped:
+ *   /brand/logo-white.png  — for dark surfaces (sidebar, dark hero, dark mode)
+ *   /brand/logo-dark.png   — for light surfaces (light pages and cards)
+ * tone: 'light' = always the white version, 'dark' = always the dark version,
+ *       'auto'  = follows the theme (dark version in light mode, white version in dark mode).
+ */
+const SIZES = {
+  xs: 'h-7',
+  sm: 'h-8',
+  md: 'h-10',
+  lg: 'h-12',
+  nav: 'h-14',
+  xl: 'h-16',
+  '2xl': 'h-24',
+};
+
+// Intrinsic size of the exported artwork (keeps layout stable while the image loads).
+const IMG = { width: 720, height: 467 };
+
+export function LogoImage({ tone = 'auto', size = 'md', className }) {
+  const cls = cn('w-auto max-w-none shrink-0 select-none object-contain', SIZES[size] ?? size, className);
+  const img = (src, extra, decorative) => (
+    <img src={src} alt={decorative ? '' : 'WOLF'} aria-hidden={decorative || undefined} {...IMG} draggable="false" className={cn(cls, extra)} />
+  );
+  if (tone === 'light') return img('/brand/logo-white.png');
+  if (tone === 'dark') return img('/brand/logo-dark.png');
   return (
-    <svg viewBox="0 0 40 40" className={cn('size-9', className)} aria-hidden="true">
-      <rect width="40" height="40" rx="11" fill="#079075" />
-      <circle cx="20" cy="20" r="10.5" fill="none" stroke="#fff" strokeWidth="2.4" />
-      <path d="M20 13.2 24.3 16.3 22.7 21.4H17.3L15.7 16.3Z" fill="#fff" />
-      <path d="M20 13.2V9.6M24.3 16.3 27.9 15M22.7 21.4 25 24.7M17.3 21.4 15 24.7M15.7 16.3 12.1 15" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
+    <>
+      {img('/brand/logo-dark.png', 'block dark:hidden')}
+      {img('/brand/logo-white.png', 'hidden dark:block', true)}
+    </>
   );
 }
 
-export default function BrandLogo({ className, inverted = false, compact = false }) {
+/** Logo only (collapsed navigation rail, compact bars). Defaults to the white version for dark surfaces. */
+export function BrandMark({ className, tone = 'light', size = 'sm' }) {
+  return <LogoImage tone={tone} size={size} className={className} />;
+}
+
+/**
+ * Logo + panel name (e.g. "WOLF | Player space").
+ * inverted: the logo sits on a dark surface (sidebar, auth hero) → white artwork.
+ */
+export default function BrandLogo({ className, inverted = false, compact = false, size = 'md' }) {
   const { t } = useI18n();
   return (
-    <span className={cn('inline-flex items-center gap-2.5', className)}>
-      <BrandMark />
+    <span className={cn('inline-flex items-center gap-3', className)}>
+      <LogoImage tone={inverted ? 'light' : 'auto'} size={size} />
       {!compact && (
-        <span className="leading-tight">
-          <span className={cn('block font-display text-xl font-bold tracking-wide', inverted ? 'text-white' : 'text-ink')}>{APP_NAME}</span>
-          <span className={cn('block text-[11px] font-medium uppercase tracking-[0.14em]', inverted ? 'text-white/60' : 'text-ink-3')}>{t('app.tagline')}</span>
+        <span
+          className={cn(
+            'border-l py-1 pl-3 text-[10.5px] font-semibold uppercase leading-tight tracking-[0.16em]',
+            inverted ? 'border-white/15 text-white/70' : 'border-line-strong text-ink-3',
+          )}
+        >
+          {t('app.tagline')}
         </span>
       )}
     </span>
