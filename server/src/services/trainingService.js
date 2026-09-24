@@ -257,14 +257,20 @@ export async function saveRegister(actor, id, records, { replace = true } = {}) 
       const keep = withStatus.map((r) => r.player_id);
       await query(`DELETE FROM training_attendance WHERE training_session_id = $1 AND NOT (player_id = ANY($2::uuid[]))`, [id, keep], client);
     }
-    for (const r of withStatus) {
+    if (withStatus.length) {
+      // One statement for the whole register; marked_by / marked_at only move for lines that changed.
+      const params = [id, actor.userId];
+      const values = withStatus.map((r) => {
+        params.push(r.player_id, r.status, r.notes ?? '');
+        return `($1, $${params.length - 2}::uuid, $${params.length - 1}, $${params.length}, $2, now())`;
+      });
       await query(
-        `INSERT INTO training_attendance (training_session_id, player_id, status, notes, marked_by, marked_at) VALUES ($1, $2, $3, $4, $5, now())
+        `INSERT INTO training_attendance (training_session_id, player_id, status, notes, marked_by, marked_at) VALUES ${values.join(', ')}
          ON CONFLICT (training_session_id, player_id) DO UPDATE
            SET status = EXCLUDED.status, notes = EXCLUDED.notes,
                marked_by = CASE WHEN training_attendance.status IS DISTINCT FROM EXCLUDED.status OR training_attendance.notes IS DISTINCT FROM EXCLUDED.notes THEN EXCLUDED.marked_by ELSE training_attendance.marked_by END,
                marked_at = CASE WHEN training_attendance.status IS DISTINCT FROM EXCLUDED.status OR training_attendance.notes IS DISTINCT FROM EXCLUDED.notes THEN now() ELSE training_attendance.marked_at END`,
-        [id, r.player_id, r.status, r.notes ?? '', actor.userId],
+        params,
         client,
       );
     }

@@ -66,7 +66,7 @@ export default function Sidebar({ onNavigate, onLogout, className }) {
           <Avatar name={user?.name} src={user?.avatar} size="md" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-white">{user?.name}</p>
-            <p className="truncate text-xs text-slate-400">{t('roles.super_admin')}</p>
+            <p className="truncate text-xs text-slate-400">{t('roles.admin')}</p>
           </div>
           <button
             type="button"

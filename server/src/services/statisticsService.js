@@ -74,19 +74,14 @@ export async function recomputeMatch(client, matchId, { score = 'auto' } = {}) {
       const passes = teamLines.reduce((s, l) => s + l.passes, 0);
       const completed = teamLines.reduce((s, l) => s + l.completed_passes, 0);
       await query(
-        `INSERT INTO match_statistics (match_id, team_id, possession) VALUES ($1, $2, 50)
-         ON CONFLICT (match_id, team_id) DO NOTHING`,
-        [matchId, teamId],
-        client,
-      );
-      await query(
-        `UPDATE match_statistics SET
-           yellow_cards = $3, red_cards = $4,
-           shots_on_target = GREATEST(shots_on_target, $5),
-           shots = GREATEST(shots, GREATEST(shots_on_target, $5)),
-           passes = CASE WHEN passes = 0 THEN $6 ELSE passes END,
-           completed_passes = CASE WHEN passes = 0 THEN $7 ELSE LEAST(completed_passes, passes) END
-         WHERE match_id = $1 AND team_id = $2`,
+        `INSERT INTO match_statistics AS ms (match_id, team_id, possession, yellow_cards, red_cards, shots_on_target, shots, passes, completed_passes)
+         VALUES ($1, $2, 50, $3, $4, $5, $5, $6, $7)
+         ON CONFLICT (match_id, team_id) DO UPDATE SET
+           yellow_cards = EXCLUDED.yellow_cards, red_cards = EXCLUDED.red_cards,
+           shots_on_target = GREATEST(ms.shots_on_target, EXCLUDED.shots_on_target),
+           shots = GREATEST(ms.shots, GREATEST(ms.shots_on_target, EXCLUDED.shots_on_target)),
+           passes = CASE WHEN ms.passes = 0 THEN EXCLUDED.passes ELSE ms.passes END,
+           completed_passes = CASE WHEN ms.passes = 0 THEN EXCLUDED.completed_passes ELSE LEAST(ms.completed_passes, ms.passes) END`,
         [matchId, teamId, mine.filter((e) => e.event_type === 'yellow_card').length, mine.filter((e) => e.event_type === 'red_card').length, scored, passes, completed],
         client,
       );
@@ -109,14 +104,20 @@ export async function recomputeStandings(client, competitionId) {
   const records = teamRecords(teams.map((t) => t.team_id), matches);
   const names = Object.fromEntries(teams.map((t) => [t.team_id, t.name]));
   const table = sortStandings(Object.values(records), (id) => names[id]);
-  for (const [i, r] of table.entries()) {
-    await query(
-      `UPDATE competition_teams SET played = $3, won = $4, drawn = $5, lost = $6, goals_for = $7, goals_against = $8, points = $9, position = $10
-       WHERE competition_id = $1 AND team_id = $2`,
-      [competitionId, r.team_id, r.played, r.won, r.drawn, r.lost, r.goals_for, r.goals_against, r.points, i + 1],
-      client,
-    );
-  }
+  // One statement for the whole table.
+  const params = [competitionId];
+  const values = table.map((r, i) => {
+    params.push(r.team_id, r.played, r.won, r.drawn, r.lost, r.goals_for, r.goals_against, r.points, i + 1);
+    const b = params.length - 9;
+    return `($${b + 1}::uuid, $${b + 2}::int, $${b + 3}::int, $${b + 4}::int, $${b + 5}::int, $${b + 6}::int, $${b + 7}::int, $${b + 8}::int, $${b + 9}::int)`;
+  });
+  await query(
+    `UPDATE competition_teams ct SET played = v.played, won = v.won, drawn = v.drawn, lost = v.lost, goals_for = v.gf, goals_against = v.ga, points = v.points, position = v.position
+     FROM (VALUES ${values.join(', ')}) AS v(team_id, played, won, drawn, lost, gf, ga, points, position)
+     WHERE ct.competition_id = $1 AND ct.team_id = v.team_id`,
+    params,
+    client,
+  );
   return table;
 }
 

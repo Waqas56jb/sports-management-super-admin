@@ -47,6 +47,13 @@ export const NOTIFICATION_SUBTYPES = {
   competition_update: 'competition',
   system: 'system',
 };
+/** Each app has its own set of notification types (icons, filters): map generic sub-types per recipient. */
+export const ROLE_SUBTYPES = {
+  admin: { training_reminder: 'training_created', match_result: 'match_reminder', attendance_update: 'training_created', player_update: 'account_update', competition_update: 'team_announcement', system: 'account_update' },
+  coach: { training_created: 'training_reminder', match_result: 'match_reminder', lineup_announced: 'match_scheduled', account_update: 'system' },
+  player: { match_scheduled: 'match_reminder', lineup_announced: 'team_announcement', training_created: 'training_reminder', player_update: 'team_announcement', account_update: 'system' },
+};
+export const subtypeFor = (role, subtype) => ROLE_SUBTYPES[role]?.[subtype] ?? subtype;
 export const ANNOUNCEMENT_AUDIENCES = ['all', 'coaches', 'players', 'team'];
 export const TEAM_EVENT_KINDS = ['meeting', 'video', 'medical', 'community', 'other'];
 

@@ -69,7 +69,7 @@ export const authService = {
   },
 
   async logout() {
-    if (!USE_MOCK) {
+    if (!USE_MOCK && authStorage.getToken()) {
       try {
         await api.post('/auth/logout');
       } catch {

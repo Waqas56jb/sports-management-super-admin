@@ -19,6 +19,7 @@ const upload = multer({
 });
 
 const r = Router();
+r.get('/media/:file', h(c.media));
 r.post('/uploads/avatar', requireAuth, upload.single('file'), h(c.avatar));
 r.post('/uploads/team-logo', requireAuth, requirePermission('uploads:team-logo'), upload.single('file'), h(c.teamLogo));
 

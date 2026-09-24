@@ -1,14 +1,16 @@
 /**
  * HTTP client for the future `server/` REST API.
  *
- * While VITE_USE_MOCK_API is not "false", every service resolves against the in-browser
- * mock database instead (services/mock). Flipping the flag routes the exact same service
- * calls through `api.*` below — the UI does not change.
+ * Every service calls the REST API below. With VITE_USE_MOCK_API="true" the same service calls
+ * resolve against the in-browser demo database instead (services/mock) — the UI does not change.
  */
 import { authStorage } from './authStorage';
 
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK_API !== 'false';
+/** Production API (Railway). VITE_API_BASE_URL overrides it, e.g. http://localhost:5000/api/v1 for local work. */
+const DEFAULT_API_BASE_URL = 'https://terrific-smile-production-85ea.up.railway.app/api/v1';
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL).replace(/\/$/, '');
+/** The in-browser demo data is used only when VITE_USE_MOCK_API is explicitly "true". */
+export const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === 'true';
 
 /** Error shape shared by the mock layer and the HTTP client. `code` is an i18n key. */
 export class ApiError extends Error {
@@ -49,19 +51,38 @@ async function request(method, path, { params, body } = {}) {
     throw new ApiError('errors.network', { status: 0 });
   }
 
-  if (response.status === 401) {
+  // An authenticated request rejected with 401 means the session expired or was revoked.
+  // Login / logout themselves never trigger it (a wrong password is not an expired session).
+  if (response.status === 401 && token && !path.startsWith('/auth/login') && !path.startsWith('/auth/logout')) {
     authStorage.clear();
     window.dispatchEvent(new CustomEvent('auth:expired'));
   }
   const payload = response.status === 204 ? null : await response.json().catch(() => null);
   if (!response.ok) {
-    throw new ApiError(payload?.code ?? 'errors.generic', {
+    // API errors: { success: false, message, error: { code, i18nKey }, errors: [{ field, i18nKey }] }
+    const fields = Array.isArray(payload?.errors)
+      ? Object.fromEntries(payload.errors.filter((e) => e.field).map((e) => [e.field, e.i18nKey ?? 'errors.generic']))
+      : null;
+    throw new ApiError(payload?.error?.i18nKey ?? payload?.code ?? 'errors.generic', {
       status: response.status,
-      fields: payload?.fields ?? null,
+      fields: fields && Object.keys(fields).length ? fields : null,
       message: payload?.message,
     });
   }
-  return payload;
+  return unwrap(payload);
+}
+
+/**
+ * Unwraps the API envelope. Paginated lists ({ data, pagination, meta }) become the list shape
+ * the services use everywhere: { data, total, page, pageSize, pages, ...meta }.
+ */
+function unwrap(payload) {
+  if (!payload || typeof payload !== 'object' || payload.success !== true) return payload;
+  if (payload.pagination) {
+    const { page, limit, total, totalPages } = payload.pagination;
+    return { ...(payload.meta ?? {}), data: payload.data, total, page, pageSize: limit, pages: totalPages };
+  }
+  return payload.data;
 }
 
 export const api = {

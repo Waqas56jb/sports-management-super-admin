@@ -18,11 +18,9 @@ npm install
 npm run dev          # http://localhost:5176/player/login
 ```
 
-**Demo login**
+**Sign-in:** a player account created on the server (e.g. `player@gmail.com` — Ahmed Hassan, #9, Djibouti FC). Accounts and passwords are managed by the API (`server/`), not by this app.
 
-| Email                | Password     | Player                                         |
-| -------------------- | ------------ | ---------------------------------------------- |
-| `player@example.com` | `Player@123` | Ahmed Hassan — P001, #9, Forward, Djibouti FC |
+The app calls the production API (`https://terrific-smile-production-85ea.up.railway.app/api/v1`) unless `VITE_API_BASE_URL` is set; `VITE_USE_MOCK_API=true` switches to the built-in demo data.
 
 ```bash
 npm run build        # production build → dist/

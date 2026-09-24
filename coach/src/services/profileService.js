@@ -38,7 +38,11 @@ export const profileService = {
 
   /** Name, phone, photo (profile page) and email (account settings). */
   async update(data) {
-    if (!USE_MOCK) return api.put('/coach/me', data);
+    if (!USE_MOCK) {
+      const profile = await api.put('/coach/me', data);
+      authService.syncUser({ name: profile.name, email: profile.email, phone: profile.phone, avatar: profile.photo });
+      return profile;
+    }
     await delay(450);
     const db = getDb();
     const coach = currentCoach(db);

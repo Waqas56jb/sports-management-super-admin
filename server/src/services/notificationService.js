@@ -4,7 +4,7 @@
  * with params, an English title/message and a generic reference that becomes a deep link per app.
  */
 import { many, one, pool, query } from '../config/database.js';
-import { DEFAULT_PREFERENCES, NOTIFICATION_SUBTYPES, NOTIFICATION_TYPES, PREFERENCE_SUBTYPES } from '../config/constants.js';
+import { DEFAULT_PREFERENCES, NOTIFICATION_SUBTYPES, NOTIFICATION_TYPES, PREFERENCE_SUBTYPES, subtypeFor } from '../config/constants.js';
 import { notFound } from '../utils/errors.js';
 import { SqlBuilder } from '../utils/filters.js';
 import { buildPagination, parsePagination } from '../utils/pagination.js';
@@ -17,7 +17,7 @@ export function serializeNotification(row, role) {
   return {
     id: row.id,
     user_id: row.user_id,
-    type: row.subtype,
+    type: subtypeFor(role, row.subtype),
     category: row.type,
     template: row.template,
     params: row.params ?? {},
@@ -135,7 +135,7 @@ export async function notify(client, recipients, spec) {
       return {
         user_id: r.id,
         type: NOTIFICATION_SUBTYPES[spec.subtype] ?? 'system',
-        subtype: spec.subtype,
+        subtype: subtypeFor(r.role, spec.subtype),
         title: text?.title ?? 'Notification',
         message: text?.message ?? '',
         template: useTemplate ? t.template : null,

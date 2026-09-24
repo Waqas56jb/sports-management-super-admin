@@ -38,6 +38,7 @@ const schema = z.object({
   PLAYER_FRONTEND_URL: z.string().optional().default(''),
 
   STORAGE_BUCKET: z.string().default('uploads'),
+  PUBLIC_API_URL: z.string().optional().default(''),
   UPLOAD_MAX_MB: z.coerce.number().positive().max(20).default(5),
 
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(900000),
@@ -74,6 +75,7 @@ export const env = Object.freeze({
   corsOrigins: [...new Set([...list(e.CORS_ORIGINS), ...frontends])],
   frontends: { admin: e.ADMIN_FRONTEND_URL, coach: e.COACH_FRONTEND_URL, player: e.PLAYER_FRONTEND_URL },
   storage: { bucket: e.STORAGE_BUCKET, maxBytes: Math.round(e.UPLOAD_MAX_MB * 1024 * 1024) },
+  publicApiUrl: e.PUBLIC_API_URL.replace(/\/$/, ''),
   rateLimit: { windowMs: e.RATE_LIMIT_WINDOW_MS, max: e.RATE_LIMIT_MAX, authMax: e.AUTH_RATE_LIMIT_MAX },
   trustProxy: /^\d+$/.test(e.TRUST_PROXY) ? Number(e.TRUST_PROXY) : bool(e.TRUST_PROXY),
   logLevel: e.LOG_LEVEL || (e.NODE_ENV === 'production' ? 'info' : e.NODE_ENV === 'test' ? 'silent' : 'debug'),

@@ -10,7 +10,7 @@ import { logger } from './utils/logger.js';
 const PORT = process.env.PORT || env.port || 5000;
 
 const server = app.listen(PORT, () => {
-  logger.info({ port: Number(PORT), env: env.nodeEnv, timezone: env.timezone }, `Sports Management API listening on :${PORT}`);
+  logger.info({ port: Number(PORT), timezone: env.timezone }, `Sports Management API listening on :${PORT}`);
 });
 server.keepAliveTimeout = 65_000;
 server.headersTimeout = 66_000;

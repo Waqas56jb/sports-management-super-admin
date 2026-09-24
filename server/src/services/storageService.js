@@ -5,7 +5,8 @@
  */
 import crypto from 'node:crypto';
 import { env } from '../config/env.js';
-import { IMAGE_TYPES, UPLOAD_FOLDERS } from '../config/constants.js';
+import { API_PREFIX, IMAGE_TYPES, UPLOAD_FOLDERS } from '../config/constants.js';
+import { one } from '../config/database.js';
 import { getSupabase, isStorageConfigured } from '../config/supabase.js';
 import { AppError } from '../utils/errors.js';
 
@@ -30,18 +31,28 @@ export function validateImage({ buffer, mimetype, originalname }) {
   if (!SIGNATURES[mimetype](buffer)) throw invalidType();
 }
 
-function assertConfigured() {
-  if (!isStorageConfigured()) {
-    throw new AppError(503, 'STORAGE_NOT_CONFIGURED', 'File storage is not configured on the server (SUPABASE_SERVICE_ROLE_KEY missing)', { i18nKey: 'errors.generic' });
-  }
+/** Public base URL of this API (for images served from the database fallback). */
+export function publicApiUrl() {
+  if (env.publicApiUrl) return env.publicApiUrl;
+  if (process.env.RAILWAY_PUBLIC_DOMAIN) return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
+  return `http://localhost:${process.env.PORT || env.port}`;
 }
 
-/** Uploads an image buffer and returns its public URL. */
-export async function uploadImage(folder, { buffer, mimetype, originalname }) {
+const mediaBase = () => `${publicApiUrl()}${API_PREFIX}/media/`;
+const storageBase = () => (env.supabase.url ? `${env.supabase.url}/storage/v1/object/public/${env.storage.bucket}/` : null);
+
+/**
+ * Uploads an image and returns its public URL: Supabase Storage when the service-role key is
+ * configured, otherwise the database fallback (served by GET /api/v1/media/:id).
+ */
+export async function uploadImage(folder, { buffer, mimetype, originalname }, actorId = null) {
   if (!UPLOAD_FOLDERS.includes(folder)) throw new AppError(400, 'INVALID_FOLDER', 'Invalid upload folder');
   validateImage({ buffer, mimetype, originalname });
-  assertConfigured();
   const ext = IMAGE_TYPES[mimetype][0];
+  if (!isStorageConfigured()) {
+    const row = await one(`INSERT INTO media (folder, content_type, size, data, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING id`, [folder, mimetype, buffer.length, buffer, actorId]);
+    return { url: `${mediaBase()}${row.id}.${ext}`, path: `media/${row.id}`, size: buffer.length, contentType: mimetype };
+  }
   const objectPath = `${folder}/${new Date().toISOString().slice(0, 7)}/${crypto.randomUUID()}.${ext}`;
   const supabase = getSupabase();
   const { error } = await supabase.storage.from(env.storage.bucket).upload(objectPath, buffer, { contentType: mimetype, cacheControl: '31536000', upsert: false });
@@ -50,9 +61,20 @@ export async function uploadImage(folder, { buffer, mimetype, originalname }) {
   return { url: data.publicUrl, path: objectPath, size: buffer.length, contentType: mimetype };
 }
 
+/** Reads an image stored by the database fallback. */
+export async function readMedia(id) {
+  return one(`SELECT content_type, data FROM media WHERE id = $1`, [id]);
+}
+
 /** Deletes a previously uploaded object (best effort — never blocks the main operation). */
 export async function removeByUrl(url) {
-  if (!url || !isStorageConfigured()) return;
+  if (!url) return;
+  if (url.startsWith(mediaBase())) {
+    const id = url.slice(mediaBase().length).split('.')[0];
+    if (/^[0-9a-f-]{36}$/.test(id)) await one(`DELETE FROM media WHERE id = $1 RETURNING id`, [id]).catch(() => {});
+    return;
+  }
+  if (!isStorageConfigured()) return;
   const marker = `/storage/v1/object/public/${env.storage.bucket}/`;
   const i = url.indexOf(marker);
   if (i === -1) return;
@@ -65,7 +87,7 @@ export async function removeByUrl(url) {
  *   https://…                → kept (already stored)
  *   null / ''                → removed
  */
-export async function resolveImageField(value, folder) {
+export async function resolveImageField(value, folder, actorId = null) {
   if (value === undefined) return undefined;
   if (value === null || value === '') return null;
   const s = String(value);
@@ -73,8 +95,10 @@ export async function resolveImageField(value, folder) {
     const m = s.match(/^data:([\w/+.-]+);base64,(.+)$/);
     if (!m) throw invalidType();
     const buffer = Buffer.from(m[2], 'base64');
-    return (await uploadImage(folder, { buffer, mimetype: m[1] })).url;
+    return (await uploadImage(folder, { buffer, mimetype: m[1] }, actorId)).url;
   }
-  if (/^https:\/\//.test(s) && s.length < 2048) return s;
+  // Only images this API stored itself may be referenced (no arbitrary external URLs).
+  const own = [mediaBase(), storageBase()].filter(Boolean);
+  if (s.length < 2048 && own.some((base) => s.startsWith(base))) return s;
   throw invalidType();
 }

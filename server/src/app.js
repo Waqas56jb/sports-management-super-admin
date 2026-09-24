@@ -79,6 +79,7 @@ export function createApp() {
   app.set('trust proxy', env.trustProxy);
   app.disable('x-powered-by');
 
+  app.use(requestLogger);
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
   const allowAll = !env.isProduction && env.corsOrigins.length === 0;
   app.use(
@@ -94,7 +95,6 @@ export function createApp() {
     }),
   );
   app.use(compression());
-  app.use(requestLogger);
 
   app.get('/health', health);
   app.get(`${API_PREFIX}/health`, health);

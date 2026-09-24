@@ -43,7 +43,7 @@ export const authService = {
       const user = db.users.find((u) => u.email.toLowerCase() === normalized);
       const stored = MOCK_PASSWORDS.get(normalized);
       if (!user || !stored || stored !== password) throw new ApiError('auth.errors.invalidCredentials', { status: 401 });
-      if (user.role !== 'super_admin') throw new ApiError('auth.errors.notAdmin', { status: 403 });
+      if (user.role !== 'admin') throw new ApiError('auth.errors.notAdmin', { status: 403 });
       if (user.status !== 'active') throw new ApiError('auth.errors.inactive', { status: 403 });
       user.last_login_at = nowIso();
       commit();
@@ -55,7 +55,7 @@ export const authService = {
         signedInAt: nowIso(),
       };
     } else {
-      const res = await api.post('/auth/login', { email, password, remember });
+      const res = await api.post('/auth/login', { email, password, remember, portal: 'admin' });
       session = { ...res, signedInAt: nowIso() };
     }
     authStorage.set(session, remember);
@@ -63,7 +63,7 @@ export const authService = {
   },
 
   async logout() {
-    if (!USE_MOCK) {
+    if (!USE_MOCK && authStorage.getToken()) {
       try {
         await api.post('/auth/logout');
       } catch {

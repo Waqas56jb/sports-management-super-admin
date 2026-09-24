@@ -8,7 +8,11 @@ const EDITABLE = ['email', 'phone', 'address', 'photo', 'emergency_contact_name'
 
 export const profileService = {
   async update(data) {
-    if (!USE_MOCK) return api.patch('/player/me/profile', data);
+    if (!USE_MOCK) {
+      const profile = await api.patch('/player/me/profile', data);
+      authService.syncUser({ email: profile.email, phone: profile.phone, avatar: profile.photo });
+      return profile;
+    }
     await delay(500);
     const db = getDb();
     const p = currentPlayer(db);

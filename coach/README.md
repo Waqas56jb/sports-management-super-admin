@@ -16,13 +16,9 @@ npm install
 npm run dev          # http://localhost:5174/coach/login (next free port if 5174 is busy)
 ```
 
-**Demo login**
+**Sign-in:** a coach account created on the server (e.g. `coach@gmail.com` — Djibouti FC and Young Stars FC). Accounts and passwords are managed by the API (`server/`), not by this app.
 
-| Email               | Password    | Teams                        |
-| ------------------- | ----------- | ---------------------------- |
-| `coach@example.com` | `Coach@123` | Djibouti FC, Young Stars FC  |
-
-The other demo coaches (e.g. `omar.djama@sporthub.dj`) use the same password and see only their own team.
+The app calls the production API (`https://terrific-smile-production-85ea.up.railway.app/api/v1`) unless `VITE_API_BASE_URL` is set; `VITE_USE_MOCK_API=true` switches to the built-in demo data.
 
 ```bash
 npm run build        # production build → dist/

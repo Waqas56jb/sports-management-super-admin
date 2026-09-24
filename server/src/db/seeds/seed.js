@@ -88,7 +88,7 @@ export function buildDataset(now = new Date()) {
   };
 
   const users = [
-    { key: 'u1', name: 'Abdoulkader Mahamoud', email: 'admin@example.com', phone: '+253 77 12 34 56', role: 'admin', created_at: stamp(-720), last_login_at: pastStamp(0, 8, 12) },
+    { key: 'u1', name: 'Abdoulkader Mahamoud', email: 'admin@gmail.com', phone: '+253 77 12 34 56', role: 'admin', created_at: stamp(-720), last_login_at: pastStamp(0, 8, 12) },
     { key: 'u2', name: 'Fatouma Ahmed Ali', email: 'f.ahmed@sporthub.dj', phone: '+253 77 45 21 90', role: 'admin', created_at: stamp(-540), last_login_at: stamp(-1, 17, 40) },
   ];
 
@@ -114,7 +114,7 @@ export function buildDataset(now = new Date()) {
   mockUsers.forEach((u) => users.push({ key: u.id, name: u.name, email: u.email, phone: u.phone, role: 'player', status: u.status, created_at: u.created_at, last_login_at: u.last_login_at }));
 
   const competitions = buildCompetitions(day, teams.map((t) => t.id));
-  const featuredId = players.find((p) => p.email === 'player@example.com')?.id;
+  const featuredId = players.find((p) => p.email === 'player@gmail.com')?.id;
   const { matches, matchEvents } = buildMatches({ rng, players, teams, day, stamp, now, featuredId });
 
   const sessions = buildTrainingSessions({ teams, now, stamp });
@@ -195,8 +195,8 @@ export function buildDataset(now = new Date()) {
   );
 
   // Demo player Ahmed Hassan (Djibouti FC)
-  const demo = players.find((p) => p.email === 'player@example.com');
-  const demoUserKey = mockUsers.find((u) => u.email === 'player@example.com').id;
+  const demo = players.find((p) => p.email === 'player@gmail.com');
+  const demoUserKey = mockUsers.find((u) => u.email === 'player@gmail.com').id;
   const mineP = (m) => m.home_team_id === 't1' || m.away_team_id === 't1';
   const pLive = matches.find((m) => m.status === 'live' && mineP(m));
   const pNext = matches.filter((m) => m.status === 'scheduled' && mineP(m)).sort(byDate);
@@ -257,9 +257,9 @@ export async function seed({ reset = false, log = console.log } = {}) {
   const now = new Date();
   const d = buildDataset(now);
   const passwords = {
-    admin: process.env.SEED_ADMIN_PASSWORD || 'Admin@123',
-    coach: process.env.SEED_COACH_PASSWORD || 'Coach@123',
-    player: process.env.SEED_PLAYER_PASSWORD || 'Player@123',
+    admin: process.env.SEED_ADMIN_PASSWORD || 'admin@123!',
+    coach: process.env.SEED_COACH_PASSWORD || 'coach@123!',
+    player: process.env.SEED_PLAYER_PASSWORD || 'player@123!',
   };
 
   log('→ hashing demo passwords');

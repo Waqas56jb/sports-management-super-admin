@@ -54,7 +54,7 @@ function ProfileSection() {
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-ink">{t('settings.profile.role')}</span>
             <span className="flex min-h-11 items-center sm:min-h-10">
-              <Badge tone="brand">{t('roles.super_admin')}</Badge>
+              <Badge tone="brand">{t('roles.admin')}</Badge>
             </span>
           </div>
           <div className="sm:col-span-2">

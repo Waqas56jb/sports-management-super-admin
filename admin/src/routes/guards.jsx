@@ -8,7 +8,7 @@ export function RequireAdmin({ children }) {
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace state={{ from: location.pathname + location.search }} />;
   }
-  if (user?.role !== 'super_admin') return <Navigate to="/admin/unauthorized" replace />;
+  if (user?.role !== 'admin') return <Navigate to="/admin/unauthorized" replace />;
   return children;
 }
 

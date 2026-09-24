@@ -83,7 +83,7 @@ export const query = z.object({
   status: enumOf(MATCH_STATUSES).optional(),
   competition_id: uuidOr('friendly'),
   team_id: uuidOr(),
-  when: z.enum(['upcoming', 'completed']).optional(),
+  when: z.enum(['upcoming', 'completed', 'past']).optional(),
   tab: z.enum(['upcoming', 'completed', 'cancelled']).optional(),
 });
 

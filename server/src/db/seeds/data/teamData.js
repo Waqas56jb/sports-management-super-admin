@@ -58,7 +58,7 @@ export const TEAMS = [
 
 /** Same staff as the coach workspace; Coach Ahmed leads Djibouti FC and Young Stars FC. */
 export const COACHES = [
-  { id: 'c1', name: 'Ahmed Hassan Robleh', license: 'CAF A Licence', experience: 14, team_ids: ['t1', 't3'], gender: 'male', email: 'coach@example.com' },
+  { id: 'c1', name: 'Ahmed Hassan Robleh', license: 'CAF A Licence', experience: 14, team_ids: ['t1', 't3'], gender: 'male', email: 'coach@gmail.com' },
   { id: 'c2', name: 'Omar Farah Djama', license: 'CAF A Licence', experience: 11, team_ids: ['t2'], gender: 'male' },
   { id: 'c3', name: 'Ismaël Houssein Aden', license: 'CAF B Licence', experience: 7, team_ids: [], gender: 'male' },
   { id: 'c4', name: 'Moussa Ali Waberi', license: 'CAF B Licence', experience: 9, team_ids: ['t4'], gender: 'male' },

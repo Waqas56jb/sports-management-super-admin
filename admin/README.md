@@ -16,11 +16,9 @@ npm install
 npm run dev          # http://localhost:5173/admin/login
 ```
 
-**Demo login**
+**Sign-in:** the admin account created on the server (`admin@gmail.com`). Accounts and passwords are managed by the API (`server/`), not by this app.
 
-| Email               | Password    |
-| ------------------- | ----------- |
-| `admin@example.com` | `Admin@123` |
+The app calls the production API (`https://terrific-smile-production-85ea.up.railway.app/api/v1`) unless `VITE_API_BASE_URL` is set; `VITE_USE_MOCK_API=true` switches to the built-in demo data.
 
 Other build commands:
 

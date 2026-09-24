@@ -77,7 +77,7 @@ export async function list(actor, q = {}) {
   else b.whereIf(q.competition_id, 'm.competition_id = ?', q.competition_id);
   b.whereIf(q.team_id, '(m.home_team_id = ? OR m.away_team_id = ?)', q.team_id, q.team_id);
   if (q.when === 'upcoming') b.where("m.status IN ('scheduled', 'live')");
-  if (q.when === 'completed') b.where("m.status IN ('completed', 'cancelled', 'postponed')");
+  if (q.when === 'completed' || q.when === 'past') b.where("m.status IN ('completed', 'cancelled', 'postponed')");
   b.whereIf(q.date_from, 'm.date >= ?', q.date_from);
   b.whereIf(q.date_to, 'm.date <= ?', q.date_to);
   b.search(q.search, ['ht.name', 'awt.name', 'ht.short_name', 'awt.short_name', 'm.location', 'm.referee']);

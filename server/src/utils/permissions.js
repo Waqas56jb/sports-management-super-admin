@@ -58,7 +58,7 @@ export function canAccessTeam(actor, teamId) {
 }
 
 export function assertTeamAccess(actor, teamId) {
-  if (!canAccessTeam(actor, teamId)) throw forbidden('This team is not assigned to you');
+  if (!canAccessTeam(actor, teamId)) throw forbidden('You do not have access to this team');
 }
 
 export function canAccessMatch(actor, match) {

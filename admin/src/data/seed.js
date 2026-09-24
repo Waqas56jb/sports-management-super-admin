@@ -19,7 +19,7 @@ import {
 } from './names';
 import { simulateMatch } from './matchSimulator';
 
-export const SEED_VERSION = 4;
+export const SEED_VERSION = 5;
 
 const slug = (s) =>
   s
@@ -126,7 +126,7 @@ export function createSeed(now = new Date()) {
       name: 'Abdoulkader Mahamoud',
       email: 'admin@example.com',
       phone: '+253 77 12 34 56',
-      role: 'super_admin',
+      role: 'admin',
       status: 'active',
       avatar: null,
       created_at: stamp(-720),
@@ -138,7 +138,7 @@ export function createSeed(now = new Date()) {
       name: 'Fatouma Ahmed Ali',
       email: 'f.ahmed@sporthub.dj',
       phone: '+253 77 45 21 90',
-      role: 'super_admin',
+      role: 'admin',
       status: 'active',
       avatar: null,
       created_at: stamp(-540),

@@ -39,7 +39,7 @@ export const userService = {
     const by = (k, v) => db.users.filter((u) => u[k] === v).length;
     return {
       total: db.users.length,
-      super_admin: by('role', 'super_admin'),
+      admin: by('role', 'admin'),
       coach: by('role', 'coach'),
       player: by('role', 'player'),
       active: by('status', 'active'),
@@ -134,7 +134,7 @@ export const userService = {
     if (id === currentUserId) throw new ApiError('users.errors.cannotDeleteSelf');
     const user = db.users.find((u) => u.id === id);
     if (!user) throw new ApiError('errors.notFound', { status: 404 });
-    if (user.role === 'super_admin' && db.users.filter((u) => u.role === 'super_admin').length === 1) {
+    if (user.role === 'admin' && db.users.filter((u) => u.role === 'admin').length === 1) {
       throw new ApiError('users.errors.lastAdmin');
     }
     const profile = linkedProfile(db, user);

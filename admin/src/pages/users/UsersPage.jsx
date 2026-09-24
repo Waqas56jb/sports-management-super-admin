@@ -25,7 +25,7 @@ import { formatDate, formatRelative } from '@/utils/format';
 import ResetPasswordModal from './ResetPasswordModal';
 import UserFormModal from './UserFormModal';
 
-const ROLE_TONE = { super_admin: 'brand', coach: 'info', player: 'neutral' };
+const ROLE_TONE = { admin: 'brand', coach: 'info', player: 'neutral' };
 
 export default function UsersPage() {
   const { t, lang } = useI18n();
@@ -138,7 +138,7 @@ export default function UsersPage() {
         onChange={(v) => set({ role: v })}
         tabs={[
           { value: '', label: t('users.tabs.all'), count: c?.total },
-          { value: 'super_admin', label: t('users.tabs.super_admin'), count: c?.super_admin },
+          { value: 'admin', label: t('users.tabs.admin'), count: c?.admin },
           { value: 'coach', label: t('users.tabs.coach'), count: c?.coach },
           { value: 'player', label: t('users.tabs.player'), count: c?.player },
         ]}

@@ -41,7 +41,7 @@ export const enrichSession = (db, s) => ({
 export function notifyAdmins(db, { type, template, params, link }) {
   const created = nowIso();
   db.users
-    .filter((u) => u.role === 'super_admin')
+    .filter((u) => u.role === 'admin')
     .forEach((u) =>
       db.notifications.unshift({
         id: uid('n'),

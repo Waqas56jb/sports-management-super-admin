@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AlertCircle, Lock, Mail, ShieldCheck, Sparkles } from 'lucide-react';
+import { AlertCircle, Lock, Mail, ShieldCheck } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { Checkbox, Input, PasswordInput } from '@/components/ui/Field';
 import { useAuth } from '@/context/AuthContext';
@@ -9,10 +9,8 @@ import { useForm } from '@/hooks/useForm';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { useErrorMessage, useI18n } from '@/i18n';
 import AuthLayout from '@/layouts/AuthLayout';
-import { USE_MOCK } from '@/services/apiClient';
 import { email, required } from '@/utils/validators';
 
-const DEMO = { email: 'admin@example.com', password: 'Admin@123' };
 const SCHEMA = { email: [required, email], password: [required] };
 
 export default function LoginPage() {
@@ -79,25 +77,6 @@ export default function LoginPage() {
             {form.submitting ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
         </form>
-
-        {USE_MOCK && (
-          <div className="mt-6 rounded-xl border border-dashed border-line-strong bg-surface p-4">
-            <p className="flex items-center gap-2 text-sm font-semibold text-ink">
-              <Sparkles className="size-4 text-amber-500" aria-hidden="true" />
-              {t('auth.demo.title')}
-            </p>
-            <p className="mt-1 text-xs text-ink-3">{t('auth.demo.description')}</p>
-            <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
-              <dt className="text-ink-3">{t('auth.email')}</dt>
-              <dd className="font-mono text-ink">{DEMO.email}</dd>
-              <dt className="text-ink-3">{t('auth.password')}</dt>
-              <dd className="font-mono text-ink">{DEMO.password}</dd>
-            </dl>
-            <Button variant="secondary" size="sm" className="mt-3" onClick={() => form.setValues(DEMO)}>
-              {t('auth.demo.fill')}
-            </Button>
-          </div>
-        )}
 
         <p className="mt-8 flex items-center justify-center gap-2 text-xs text-ink-3">
           <ShieldCheck className="size-4" aria-hidden="true" />

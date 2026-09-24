@@ -5,7 +5,7 @@ export default {
   searchPlaceholder: 'Search by name or email',
   tabs: {
     all: 'All users',
-    super_admin: 'Super Admins',
+    admin: 'Super Admins',
     coach: 'Coaches',
     player: 'Players',
   },

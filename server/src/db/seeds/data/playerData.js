@@ -18,7 +18,7 @@ export const DEMO_PLAYER = {
   teamIndex: 0,
   squadIndex: 13,
   name: 'Ahmed Hassan',
-  email: 'player@example.com',
+  email: 'player@gmail.com',
   phone: '+253 77 84 12 09',
   dob: '2000-03-14',
   address: 'Quartier 7, Djibouti',

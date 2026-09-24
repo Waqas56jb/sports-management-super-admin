@@ -1,6 +1,6 @@
 export const APP_NAME = 'SportHub';
 
-export const ROLES = ['super_admin', 'coach', 'player'];
+export const ROLES = ['admin', 'coach', 'player'];
 export const ACCOUNT_STATUSES = ['active', 'inactive', 'suspended'];
 export const COACH_STATUSES = ['active', 'inactive'];
 export const TEAM_STATUSES = ['active', 'inactive'];
@@ -51,7 +51,7 @@ export const STATUS_TONES = {
   absent: 'danger',
   late: 'warning',
   excused: 'info',
-  super_admin: 'brand',
+  admin: 'brand',
   coach: 'info',
   player: 'neutral',
 };

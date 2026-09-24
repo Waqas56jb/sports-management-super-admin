@@ -5,7 +5,7 @@ export default {
   searchPlaceholder: 'Rechercher par nom ou e-mail',
   tabs: {
     all: 'Tous',
-    super_admin: 'Super administrateurs',
+    admin: 'Super administrateurs',
     coach: 'Entraîneurs',
     player: 'Joueurs',
   },
