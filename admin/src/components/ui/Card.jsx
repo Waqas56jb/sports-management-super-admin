@@ -13,7 +13,7 @@ export function CardHeader({ title, subtitle, action, icon: Icon, className, id 
     <div className={cn('flex flex-wrap items-start justify-between gap-x-4 gap-y-2 px-4 pt-4 sm:px-5 sm:pt-5', className)}>
       <div className="flex min-w-0 items-start gap-3">
         {Icon && (
-          <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-surface-3 text-ink-2 ring-1 ring-inset ring-line/70">
+          <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-linear-to-br from-brand-50 to-brand-100/60 text-brand-700 shadow-xs ring-1 ring-inset ring-brand-600/10 dark:from-brand-500/15 dark:to-brand-500/5 dark:text-brand-300 dark:ring-brand-400/15">
             <Icon className="size-[18px]" aria-hidden="true" />
           </span>
         )}

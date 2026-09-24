@@ -47,7 +47,7 @@ export default function AuthLayout({ children }) {
   const features = ['matches', 'players', 'reports'];
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
-      <aside className="pitch-lines relative hidden overflow-hidden bg-[#0b1220] text-white lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:p-12 xl:p-16">
+      <aside className="pitch-lines hero-aurora relative hidden overflow-hidden bg-[#0b1220] text-white lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:p-12 xl:p-16">
         <div className="absolute -right-40 -top-40 size-[520px] rounded-full bg-brand-500/15 blur-3xl" aria-hidden="true" />
         <div className="absolute -bottom-48 -left-24 size-[420px] rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true" />
         <BrandLogo inverted compact size="2xl" className="relative" />

@@ -43,7 +43,7 @@ export default function Scoreboard({ match, actions }) {
           : t('matches.centre.notStarted');
 
   return (
-    <section className="pitch-lines relative overflow-hidden rounded-(--radius-card) bg-[#0b1220] text-white shadow-(--shadow-card)">
+    <section className="pitch-lines hero-aurora relative overflow-hidden rounded-(--radius-card) bg-[#0b1220] text-white shadow-(--shadow-card)">
       <div className="absolute -left-24 -top-24 size-80 rounded-full bg-brand-500/10 blur-3xl" aria-hidden="true" />
       <div className="absolute -bottom-24 -right-24 size-80 rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true" />
       <div className="relative px-4 pb-5 pt-4 sm:px-8 sm:pb-8 sm:pt-6">

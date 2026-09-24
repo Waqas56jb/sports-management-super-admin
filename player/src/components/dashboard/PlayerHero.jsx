@@ -17,7 +17,7 @@ export default function PlayerHero({ player }) {
   const { t, lang } = useI18n();
   const firstName = player.name.split(' ')[0];
   return (
-    <section aria-label={player.name} className="pitch-lines relative overflow-hidden rounded-(--radius-card) bg-[#0b1220] p-5 text-white shadow-(--shadow-card) sm:p-6">
+    <section aria-label={player.name} className="pitch-lines hero-aurora relative overflow-hidden rounded-(--radius-card) bg-[#0b1220] p-5 text-white shadow-(--shadow-card) sm:p-6">
       <div className="absolute -right-24 -top-24 size-72 rounded-full bg-brand-500/15 blur-3xl" aria-hidden="true" />
       <div className="absolute -bottom-28 left-1/3 size-64 rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true" />
       <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">

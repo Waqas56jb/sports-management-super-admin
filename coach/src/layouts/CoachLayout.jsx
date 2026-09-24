@@ -81,7 +81,7 @@ export default function CoachLayout() {
         <main id="main" ref={mainRef} tabIndex={-1} className="mx-auto w-full max-w-[1600px] px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))] pt-5 outline-none sm:px-6 sm:pt-7 md:pb-12 lg:px-8">
           <RouteErrorBoundary key={pathname}>
             <Suspense fallback={<PageSkeleton />}>
-              <div key={pathname} className="animate-page-in">
+              <div key={pathname} className="stagger">
                 <Outlet />
               </div>
             </Suspense>

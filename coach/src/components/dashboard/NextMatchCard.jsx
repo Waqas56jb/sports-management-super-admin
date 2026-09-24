@@ -48,7 +48,7 @@ export default function NextMatchCard({ match }) {
   }
   const live = match.status === 'live';
   return (
-    <section aria-label={t('dashboard.nextMatch.title')} className="pitch-lines relative flex flex-col overflow-hidden rounded-(--radius-card) bg-[#0b1220] p-5 text-white shadow-(--shadow-card)">
+    <section aria-label={t('dashboard.nextMatch.title')} className="pitch-lines hero-aurora relative flex flex-col overflow-hidden rounded-(--radius-card) bg-[#0b1220] p-5 text-white shadow-(--shadow-card)">
       <div className="absolute -right-20 -top-20 size-64 rounded-full bg-brand-500/15 blur-3xl" aria-hidden="true" />
       <div className="relative flex items-center justify-between gap-2">
         <h2 className="text-sm font-semibold text-white/80">{t('dashboard.nextMatch.title')}</h2>

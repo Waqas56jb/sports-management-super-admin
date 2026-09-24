@@ -6,10 +6,10 @@ export function Meter({ value, max = 100, tone, className, label, size = 'md' })
   const auto = pct >= 85 ? 'good' : pct >= 70 ? 'warn' : 'bad';
   const t = tone ?? auto;
   const colors = {
-    good: ['bg-emerald-500', 'bg-emerald-500/15'],
-    warn: ['bg-amber-500', 'bg-amber-500/15'],
-    bad: ['bg-red-500', 'bg-red-500/15'],
-    brand: ['bg-brand-500', 'bg-brand-500/15'],
+    good: ['bg-linear-to-r from-emerald-400 to-emerald-600', 'bg-emerald-500/15'],
+    warn: ['bg-linear-to-r from-amber-300 to-amber-500', 'bg-amber-500/15'],
+    bad: ['bg-linear-to-r from-red-400 to-red-600', 'bg-red-500/15'],
+    brand: ['bg-linear-to-r from-brand-400 to-brand-600', 'bg-brand-500/15'],
   }[t];
   return (
     <div
@@ -20,7 +20,7 @@ export function Meter({ value, max = 100, tone, className, label, size = 'md' })
       aria-label={label}
       className={cn('w-full overflow-hidden rounded-full', size === 'sm' ? 'h-1.5' : 'h-2', colors[1], className)}
     >
-      <div className={cn('h-full rounded-full transition-[width] duration-500', colors[0])} style={{ width: `${pct}%` }} />
+      <div className={cn('meter-fill h-full rounded-full transition-[width] duration-500', colors[0])} style={{ width: `${pct}%` }} />
     </div>
   );
 }

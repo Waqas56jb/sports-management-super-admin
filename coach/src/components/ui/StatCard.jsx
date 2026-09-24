@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { cn } from '@/utils/cn';
@@ -11,25 +12,79 @@ const TONES = {
   slate: 'bg-surface-3 text-ink-2 ring-line',
 };
 
+// Soft colour wash in the corner of each tile, matching its icon chip.
+const GLOWS = {
+  brand: 'from-brand-500/25',
+  sky: 'from-sky-500/25',
+  amber: 'from-amber-500/25',
+  violet: 'from-violet-500/25',
+  rose: 'from-rose-500/25',
+  slate: 'from-ink-3/15',
+};
+
+const NUMERIC = /^(-?\d+(?:[.,]\d+)?)(\s*%?)$/;
+
+/** Counts up from 0 to a numeric value (e.g. 42, 87.5, "93%"); anything else renders as-is. */
+function CountUp({ value }) {
+  const match = typeof value === 'number' ? [null, String(value), ''] : typeof value === 'string' ? NUMERIC.exec(value.trim()) : null;
+  const target = match ? Number(match[1].replace(',', '.')) : null;
+  const decimals = match && /[.,]/.test(match[1]) ? match[1].split(/[.,]/)[1].length : 0;
+  const [shown, setShown] = useState(target === null ? null : 0);
+  const played = useRef(false);
+  useEffect(() => {
+    if (target === null || !Number.isFinite(target)) return undefined;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || played.current) {
+      setShown(target);
+      return undefined;
+    }
+    played.current = true;
+    let frame;
+    const start = performance.now();
+    const duration = 1100;
+    const tick = (now) => {
+      const p = Math.min(1, (now - start) / duration);
+      setShown(target * (1 - (1 - p) ** 4));
+      if (p < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [target]);
+  if (target === null || !Number.isFinite(target)) return value;
+  const text = (shown ?? target).toFixed(decimals);
+  return (
+    <>
+      <span aria-hidden="true">{match[1].includes(',') ? text.replace('.', ',') : text}{match[2]}</span>
+      <span className="sr-only">{value}</span>
+    </>
+  );
+}
+
 /** KPI tile: label · value · supporting line. Becomes a link when `to` is set. */
 export default function StatCard({ label, value, sub, icon: Icon, tone = 'brand', to, className, children }) {
   const body = (
     <>
-      <div className="flex items-start justify-between gap-3">
+      <span
+        className={cn('pointer-events-none absolute -right-10 -top-12 size-36 rounded-full bg-radial to-transparent to-70% opacity-80 transition-opacity duration-300 group-hover:opacity-100', GLOWS[tone])}
+        aria-hidden="true"
+      />
+      <div className="relative flex items-start justify-between gap-3">
         <p className="text-sm font-medium text-ink-2">{label}</p>
         {Icon && (
-          <span className={cn('grid size-10 shrink-0 place-items-center rounded-xl ring-1 ring-inset', TONES[tone])}>
+          <span className={cn('grid size-10 shrink-0 place-items-center rounded-xl shadow-xs ring-1 ring-inset transition-transform duration-300 ease-(--ease-spring) group-hover:-rotate-6 group-hover:scale-110', TONES[tone])}>
             <Icon className="size-[18px]" aria-hidden="true" />
           </span>
         )}
       </div>
-      <p className="mt-2 font-display text-[32px] font-bold leading-none tracking-tight text-ink sm:text-[36px]">{value}</p>
-      {sub && <p className="mt-2 flex items-center gap-1 text-xs text-ink-3">{sub}</p>}
+      <p className="relative mt-2 font-display text-[32px] font-bold leading-none tracking-tight text-ink tabular sm:text-[36px]">
+        <CountUp value={value} />
+      </p>
+      {sub && <p className="relative mt-2 flex items-center gap-1 text-xs text-ink-3">{sub}</p>}
       {children}
       {to && <ArrowUpRight className="absolute bottom-4 right-4 size-4 text-ink-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />}
     </>
   );
-  const classes = cn('card group relative block overflow-hidden p-4 sm:p-5', to && 'card-interactive', className);
+  const classes = cn('card stat-card group relative block overflow-hidden p-4 sm:p-5', to && 'card-interactive', className);
   return to ? (
     <Link to={to} className={classes}>
       {body}

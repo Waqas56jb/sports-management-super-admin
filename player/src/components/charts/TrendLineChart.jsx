@@ -1,35 +1,50 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { AXIS_PROPS, ChartTooltip, GRID_PROPS } from './ChartParts';
+import { AXIS_PROPS, ChartTooltip, GRID_PROPS, LINE_CURSOR, reveal, useChartPaint } from './ChartParts';
 
-/** Single-series trend: 2px line with a ~10% wash, end-of-point markers, crosshair tooltip. */
+/**
+ * Single-series trend: a 2px line over a fading wash of the same hue, drawn in on load.
+ * Small series show every point; the latest point is always emphasised.
+ */
 export default function TrendLineChart({ data, xKey, yKey, name, domain, format = (v) => v, tickFor, labelFor, color = 'var(--chart-1)' }) {
-  const gradientId = `g-${yKey}`;
+  const paint = useChartPaint();
+  const last = data.length - 1;
+  const dense = data.length > 12;
+  const dot = (props) => {
+    const { cx, cy, index, value } = props;
+    if (value === null || value === undefined || cx === undefined) return <g key={index} />;
+    if (index === last) {
+      return (
+        <g key={index}>
+          <circle cx={cx} cy={cy} r={9} fill={color} opacity={0.18} />
+          <circle cx={cx} cy={cy} r={5} fill={color} stroke="var(--surface)" strokeWidth={2} />
+        </g>
+      );
+    }
+    return dense ? <g key={index} /> : <circle key={index} cx={cx} cy={cy} r={3.5} fill="var(--surface)" stroke={color} strokeWidth={2} />;
+  };
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: -12 }}>
-        <defs>
-          <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stopColor={color} stopOpacity={0.16} />
-            <stop offset="1" stopColor={color} stopOpacity={0.02} />
-          </linearGradient>
-        </defs>
+      <AreaChart data={data} margin={{ top: 12, right: 14, bottom: 0, left: -12 }}>
+        {paint.defs}
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey={xKey} tickFormatter={tickFor} {...AXIS_PROPS} minTickGap={16} />
         <YAxis domain={domain} tickFormatter={format} {...AXIS_PROPS} />
         <Tooltip
-          cursor={{ stroke: 'var(--line-strong)', strokeWidth: 1 }}
-          content={<ChartTooltip labelFormatter={(v) => (labelFor ? labelFor(v) : v)} valueFormatter={format} nameFor={() => name} />}
+          cursor={LINE_CURSOR}
+          content={<ChartTooltip labelFormatter={(v) => (labelFor ? labelFor(v) : v)} valueFormatter={format} nameFor={() => name} colorFor={() => color} />}
         />
         <Area
           type="monotone"
           dataKey={yKey}
           stroke={color}
-          strokeWidth={2}
-          fill={`url(#${gradientId})`}
-          dot={{ r: 3.5, fill: color, strokeWidth: 0 }}
-          activeDot={{ r: 5, stroke: 'var(--surface)', strokeWidth: 2 }}
+          strokeWidth={2.25}
+          strokeLinecap="round"
+          fill={paint.fill(color, 'area')}
+          className="chart-glow"
+          dot={dot}
+          activeDot={{ r: 6, fill: color, stroke: 'var(--surface)', strokeWidth: 2.5 }}
           connectNulls
-          isAnimationActive={false}
+          {...reveal(0)}
         />
       </AreaChart>
     </ResponsiveContainer>

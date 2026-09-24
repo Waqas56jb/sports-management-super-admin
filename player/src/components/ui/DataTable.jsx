@@ -98,7 +98,7 @@ export default function DataTable({
                 <tr
                   key={rowKey(row)}
                   {...props}
-                  className={cn('border-b border-line transition-colors last:border-0 hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none', props.className)}
+                  className={cn('border-b border-line transition-colors duration-150 last:border-0 hover:bg-brand-50/50 focus-visible:bg-surface-2 focus-visible:outline-none dark:hover:bg-brand-500/[0.06]', props.className)}
                 >
                   {columns.map((col) => (
                     <td

@@ -9,7 +9,7 @@ export default function LiveMatchBanner({ match }) {
   return (
     <Link
       to={`/admin/matches/${match.id}`}
-      className="pitch-lines group relative block overflow-hidden rounded-(--radius-card) bg-[#0b1220] p-4 text-white shadow-(--shadow-card) sm:p-5"
+      className="pitch-lines hero-aurora group relative block overflow-hidden rounded-(--radius-card) bg-[#0b1220] p-4 text-white shadow-(--shadow-card) sm:p-5"
     >
       <div className="absolute -right-24 -top-24 size-72 rounded-full bg-red-500/15 blur-3xl" aria-hidden="true" />
       <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

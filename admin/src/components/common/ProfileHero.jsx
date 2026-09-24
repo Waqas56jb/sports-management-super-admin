@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/Card';
 export default function ProfileHero({ avatar, title, badge, meta, actions, children }) {
   return (
     <Card className="overflow-hidden">
-      <div className="pitch-lines h-20 bg-[#0b1220] sm:h-24" aria-hidden="true" />
+      <div className="pitch-lines hero-aurora h-20 bg-[#0b1220] sm:h-24" aria-hidden="true" />
       <div className="flex flex-col gap-4 px-4 pb-5 sm:flex-row sm:items-end sm:px-6">
         <div className="-mt-12 shrink-0 sm:-mt-14">{avatar}</div>
         <div className="min-w-0 flex-1 sm:pb-1">
