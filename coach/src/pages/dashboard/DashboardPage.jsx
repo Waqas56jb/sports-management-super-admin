@@ -244,9 +244,10 @@ export default function DashboardPage() {
           subtitle={t('dashboard.charts.performanceSub')}
           height={260}
           empty={!perfRows.length}
+          legend={<TeamLegend teams={teams} />}
           table={{ columns: [{ key: 'player', label: t('common.player') }, { key: 'rating', label: t('dashboard.charts.rating'), align: 'right' }], rows: perfRows.map((r) => ({ player: r.title, rating: r.value.toFixed(1) })) }}
         >
-          <RateBarChart rows={perfRows} label={t('dashboard.charts.rating')} domain={[0, 10]} format={(v) => Number(v).toFixed(1)} labelWidth={96} />
+          <RateBarChart rows={perfRows} label={t('dashboard.charts.rating')} domain={[0, 10]} ticks={[0, 2, 4, 6, 8, 10]} format={(v) => Number(v).toFixed(1)} labelWidth={96} />
         </ChartCard>
         <ChartCard
           title={t('dashboard.charts.teamResults')}

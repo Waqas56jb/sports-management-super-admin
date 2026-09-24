@@ -291,8 +291,8 @@ export default function LineupEditor({ team, squad, lineup, onSave }) {
                           <span className="block truncate text-sm font-medium text-ink">{p.name}</span>
                           {unavailable && <span className="text-[11px] font-medium text-red-600 dark:text-red-400">{t(`status.${p.status}`)}</span>}
                         </span>
-                        {state === 'xi' && <Badge tone="brand">{t('matches.lineup.starterTag')}</Badge>}
-                        {state === 'sub' && <Badge tone="info">{t('matches.lineup.subTag')}</Badge>}
+                        {state === 'xi' && <Badge tone="brand" className="hidden sm:inline-flex">{t('matches.lineup.starterTag')}</Badge>}
+                        {state === 'sub' && <Badge tone="info" className="hidden sm:inline-flex">{t('matches.lineup.subTag')}</Badge>}
                         {state !== 'xi' && (
                           <Button variant="secondary" size="sm" className="px-2" onClick={() => toXI(p.id)} disabled={unavailable && !state}>
                             {t('matches.lineup.starterTag')}
@@ -318,10 +318,11 @@ export default function LineupEditor({ team, squad, lineup, onSave }) {
         </div>
       </div>
 
-      {/* Sticky save bar */}
+      {/* Sticky save bar — only while there is something to save or fix */}
+      {(dirty || error) && (
       <div className="sticky bottom-[4.5rem] z-10 -mx-4 flex flex-col gap-2 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur sm:-mx-5 sm:flex-row sm:items-center sm:justify-between sm:px-5 md:bottom-0 lg:col-span-2">
         <p className={cn('text-sm', error ? 'font-medium text-red-600 dark:text-red-400' : dirty ? 'font-medium text-amber-600 dark:text-amber-400' : 'text-ink-3')} role={error ? 'alert' : undefined}>
-          {error ?? (dirty ? t('matches.editor.unsaved') : t('matches.editor.hint'))}
+          {error ?? t('matches.editor.unsaved')}
         </p>
         <div className="flex gap-2">
           <Button variant="secondary" icon={RotateCcw} onClick={() => resetTo(initial)} disabled={!dirty || saving} className="flex-1 sm:flex-none">
@@ -338,6 +339,7 @@ export default function LineupEditor({ team, squad, lineup, onSave }) {
           </Button>
         </div>
       </div>
+      )}
     </div>
   );
 }

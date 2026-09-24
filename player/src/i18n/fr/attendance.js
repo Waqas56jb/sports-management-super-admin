@@ -1,0 +1,41 @@
+export default {
+  title: 'Présences',
+  description: 'Votre présence personnelle aux entraînements. L’appel est fait par votre entraîneur.',
+  kpi: {
+    rate: 'Taux de présence',
+    rateSub: 'Présent ou en retard ÷ séances pointées',
+    sessions: 'Séances au total',
+    sessionsSub: { zero: 'Toutes les feuilles sont à jour', one: '{count} appel en attente', other: '{count} appels en attente' },
+    present: 'Présent',
+    absent: 'Absent',
+    late: 'En retard',
+    excused: 'Excusé',
+  },
+  charts: {
+    monthly: 'Présence par mois',
+    monthlySub: 'Séances par statut chaque mois',
+    trend: 'Évolution de la participation',
+    trendSub: 'Votre taux de présence au fil du temps',
+    rate: 'Taux de présence',
+    split: 'Présences et absences',
+    splitSub: 'Toutes les séances pointées',
+  },
+  history: {
+    title: 'Historique des présences',
+    date: 'Date',
+    training: 'Séance',
+    team: 'Équipe',
+    status: 'Statut',
+    coach: 'Entraîneur',
+    notes: 'Remarques',
+  },
+  filters: {
+    status: 'Statut',
+    type: 'Type de séance',
+  },
+  empty: {
+    title: 'Aucune présence enregistrée',
+    description: 'Les présences apparaissent dès que votre entraîneur fait l’appel.',
+    filtered: 'Aucun pointage ne correspond à ces filtres',
+  },
+};

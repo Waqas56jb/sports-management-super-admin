@@ -1,0 +1,41 @@
+export default {
+  title: 'Attendance',
+  description: 'Your personal training attendance. Registers are taken by your coach.',
+  kpi: {
+    rate: 'Attendance rate',
+    rateSub: 'Present or late ÷ recorded sessions',
+    sessions: 'Total sessions',
+    sessionsSub: { zero: 'All registers complete', one: '{count} register pending', other: '{count} registers pending' },
+    present: 'Present',
+    absent: 'Absent',
+    late: 'Late',
+    excused: 'Excused',
+  },
+  charts: {
+    monthly: 'Monthly attendance',
+    monthlySub: 'Sessions by status each month',
+    trend: 'Training participation trend',
+    trendSub: 'Your attendance rate over time',
+    rate: 'Attendance rate',
+    split: 'Present vs absent',
+    splitSub: 'All recorded sessions',
+  },
+  history: {
+    title: 'Attendance history',
+    date: 'Date',
+    training: 'Training',
+    team: 'Team',
+    status: 'Status',
+    coach: 'Coach',
+    notes: 'Notes',
+  },
+  filters: {
+    status: 'Status',
+    type: 'Training type',
+  },
+  empty: {
+    title: 'No attendance records',
+    description: 'Records appear once your coach takes the register at training.',
+    filtered: 'No records match these filters',
+  },
+};

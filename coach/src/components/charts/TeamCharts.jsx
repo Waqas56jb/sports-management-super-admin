@@ -24,7 +24,7 @@ export function AttendanceTrendChart({ data, teams, xKey = 'week', labelFor, tic
           content={<ChartTooltip labelFormatter={(v) => (labelFor ? labelFor(v) : formatShortDate(v, lang))} valueFormatter={(v) => formatPercent(v, lang)} nameFor={(k) => names[k]} />}
         />
         {teams.map((team) => (
-          <Line key={team.id} type="monotone" dataKey={team.id} stroke={teamColor(team)} strokeWidth={2} dot={data.length < 16 ? { r: 3, strokeWidth: 0, fill: teamColor(team) } : false} activeDot={{ r: 5, stroke: 'var(--surface)', strokeWidth: 2 }} connectNulls />
+          <Line key={team.id} type="monotone" dataKey={team.id} stroke={teamColor(team)} strokeWidth={2} dot={data.length < 16 ? { r: 3, strokeWidth: 0, fill: teamColor(team) } : false} activeDot={{ r: 5, stroke: 'var(--surface)', strokeWidth: 2 }} connectNulls isAnimationActive={false} />
         ))}
         {overallLabel && <Line type="monotone" dataKey="overall" stroke="var(--ink-3)" strokeWidth={2} strokeDasharray="4 4" dot={false} />}
       </LineChart>
