@@ -1,6 +1,6 @@
 /** Fixtures and results. Completed/live matches get line-ups, events and team stats from the simulator. */
-import { REFEREES } from './names';
-import { simulateMatch } from './matchSimulator';
+import { REFEREES } from './names.js';
+import { simulateMatch } from './matchSimulator.js';
 
 /** Double round-robin pairings for four teams. */
 const ROUNDS = [

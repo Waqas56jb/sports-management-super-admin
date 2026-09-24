@@ -15,6 +15,8 @@ export function RequirePlayer({ children }) {
 /** Signed-in players skip the login page. */
 export function GuestOnly({ children }) {
   const { isAuthenticated } = useAuth();
-  if (isAuthenticated) return <Navigate to="/player/dashboard" replace />;
+  const location = useLocation();
+  // After sign-in, return to the page that sent the player to the login screen.
+  if (isAuthenticated) return <Navigate to={location.state?.from ?? '/player/dashboard'} replace />;
   return children;
 }

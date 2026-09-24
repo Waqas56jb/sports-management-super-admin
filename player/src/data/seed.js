@@ -13,7 +13,7 @@ import { buildNotifications } from './notificationData';
 import { COACHES, TEAM_EVENTS, TEAMS } from './teamData';
 import { buildTrainingSessions } from './trainingData';
 
-export const SEED_VERSION = 1;
+export const SEED_VERSION = 2;
 
 const slug = (s) =>
   s
@@ -68,7 +68,8 @@ export function createSeed(now = new Date()) {
 
   const players = buildPlayers({ rng, teams, users, now, day, stamp, pastStamp });
   const competitions = buildCompetitions(day, teams.map((t) => t.id));
-  const { matches, matchEvents } = buildMatches({ rng, players, teams, day, stamp, now });
+  const featuredId = players.find((p) => p.email === 'player@example.com')?.id;
+  const { matches, matchEvents } = buildMatches({ rng, players, teams, day, stamp, now, featuredId });
   const trainingSessions = buildTrainingSessions({ teams, now, stamp });
   const attendance = buildAttendance({ rng, players, sessions: trainingSessions, today: day(0) });
   const teamEvents = TEAM_EVENTS.map((e) => ({ ...e, date: day(e.offset) }));

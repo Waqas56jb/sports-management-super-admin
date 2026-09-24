@@ -1,0 +1,53 @@
+/** Competitions (dates are relative to today so statuses stay realistic). */
+export function buildCompetitions(day, teamIds) {
+  return [
+    {
+      id: 'k1',
+      name: 'Djibouti Premier League',
+      type: 'league',
+      season: '2026/27',
+      start_date: day(-29),
+      end_date: day(150),
+      location: 'Djibouti — nationwide',
+      team_ids: teamIds,
+      status: 'active',
+      description: 'Top division of Djiboutian football. Double round-robin, three points for a win.',
+    },
+    {
+      id: 'k2',
+      name: 'Coupe de Djibouti',
+      type: 'cup',
+      season: '2026/27',
+      start_date: day(17),
+      end_date: day(33),
+      location: 'Stade El Hadj Hassan Gouled Aptidon',
+      team_ids: teamIds,
+      status: 'upcoming',
+      description: 'National knockout cup. Single-leg semi-finals and final at the national stadium.',
+    },
+    {
+      id: 'k3',
+      name: 'Independence Day Tournament',
+      type: 'tournament',
+      season: '2026',
+      start_date: day(-92),
+      end_date: day(-88),
+      location: 'Stade El Hadj Hassan Gouled Aptidon',
+      team_ids: teamIds,
+      status: 'completed',
+      description: 'Four-team invitational played around 27 June to celebrate national Independence Day.',
+    },
+    {
+      id: 'k4',
+      name: 'Djibouti Premier League',
+      type: 'league',
+      season: '2025/26',
+      start_date: day(-330),
+      end_date: day(-130),
+      location: 'Djibouti — nationwide',
+      team_ids: teamIds,
+      status: 'completed',
+      description: 'Previous league season. Double round-robin.',
+    },
+  ];
+}
