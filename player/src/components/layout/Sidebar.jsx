@@ -30,7 +30,7 @@ export default function Sidebar({ onNavigate, onLogout, collapsed = false, class
   const { unread } = useNotifications();
 
   return (
-    <div className={cn('flex h-full flex-col bg-[#0b1220] text-slate-300', className)}>
+    <div className={cn('flex h-full flex-col bg-[#0b1220] bg-[radial-gradient(130%_45%_at_0%_0%,rgb(18_178_142/0.16),transparent_62%)] text-slate-300', className)}>
       <div className={cn('flex h-16 shrink-0 items-center', collapsed ? 'justify-center' : 'px-5')}>{collapsed ? <BrandMark /> : <BrandLogo inverted />}</div>
 
       <nav aria-label={t('nav.main')} className={cn('flex-1 pb-4 no-scrollbar', collapsed ? 'overflow-visible px-2' : 'overflow-y-auto px-3')}>
@@ -52,17 +52,17 @@ export default function Sidebar({ onNavigate, onLogout, collapsed = false, class
                         cn(
                           'group relative flex h-11 items-center rounded-xl text-sm font-medium transition-colors',
                           collapsed ? 'justify-center' : 'gap-3 px-3 lg:h-10',
-                          isActive ? 'bg-white/[0.08] text-white' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-100',
+                          isActive ? 'bg-gradient-to-r from-white/[0.11] to-white/[0.04] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-100',
                         )
                       }
                     >
                       {({ isActive }) => (
                         <>
-                          {isActive && <span className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-brand-400" aria-hidden="true" />}
+                          {isActive && <span className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-brand-400 shadow-[0_0_12px_rgb(52_205_167/0.8)]" aria-hidden="true" />}
                           <Icon className={cn('size-[18px] shrink-0', isActive ? 'text-brand-300' : 'text-slate-500 group-hover:text-slate-300')} aria-hidden="true" />
                           {collapsed ? (
                             <>
-                              {badge && <span className="absolute right-2 top-2 size-2 rounded-full bg-brand-400" aria-hidden="true" />}
+                              {badge && <span className="absolute right-2 top-2 size-2 rounded-full bg-brand-400 shadow-[0_0_12px_rgb(52_205_167/0.8)]" aria-hidden="true" />}
                               <Tip>
                                 {label}
                                 {badge ? ` (${unread})` : ''}

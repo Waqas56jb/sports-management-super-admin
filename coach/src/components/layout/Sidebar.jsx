@@ -15,7 +15,7 @@ export default function Sidebar({ onNavigate, onLogout, className }) {
   const { unread } = useNotifications();
 
   return (
-    <div className={cn('flex h-full flex-col bg-[#0b1220] text-slate-300', className)}>
+    <div className={cn('flex h-full flex-col bg-[#0b1220] bg-[radial-gradient(130%_45%_at_0%_0%,rgb(18_178_142/0.16),transparent_62%)] text-slate-300', className)}>
       <div className="flex h-16 shrink-0 items-center px-5">
         <BrandLogo inverted />
       </div>
@@ -35,13 +35,13 @@ export default function Sidebar({ onNavigate, onLogout, className }) {
                       className={({ isActive }) =>
                         cn(
                           'group relative flex h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors lg:h-10',
-                          isActive ? 'bg-white/[0.08] text-white' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-100',
+                          isActive ? 'bg-gradient-to-r from-white/[0.11] to-white/[0.04] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-100',
                         )
                       }
                     >
                       {({ isActive }) => (
                         <>
-                          {isActive && <span className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-brand-400" aria-hidden="true" />}
+                          {isActive && <span className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-brand-400 shadow-[0_0_12px_rgb(52_205_167/0.8)]" aria-hidden="true" />}
                           <Icon className={cn('size-[18px] shrink-0', isActive ? 'text-brand-300' : 'text-slate-500 group-hover:text-slate-300')} aria-hidden="true" />
                           <span className="flex-1 truncate">{t(`nav.${item.key}`)}</span>
                           {item.badge === 'unread' && unread > 0 && (

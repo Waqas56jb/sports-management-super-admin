@@ -50,7 +50,7 @@ export function ToastProvider({ children }) {
       <div
         aria-live="polite"
         aria-atomic="false"
-        className="pointer-events-none fixed inset-x-0 top-3 z-[100] flex flex-col items-center gap-2 px-4 sm:inset-x-auto sm:right-4 sm:top-4 sm:items-end"
+        className="pointer-events-none fixed inset-x-0 top-[max(0.75rem,env(safe-area-inset-top))] z-[100] flex flex-col items-center gap-2 px-4 sm:inset-x-auto sm:right-4 sm:top-4 sm:items-end"
       >
         {toasts.map((toast) => {
           const [Icon, color] = ICONS[toast.tone];
@@ -58,7 +58,7 @@ export function ToastProvider({ children }) {
             <div
               key={toast.id}
               role={toast.tone === 'error' ? 'alert' : 'status'}
-              className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-start gap-3 rounded-xl border border-line bg-surface p-3.5 pr-2 shadow-(--shadow-pop)"
+              className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-start gap-3 glass rounded-2xl border border-line/80 p-3.5 pr-2 shadow-(--shadow-pop)"
             >
               <Icon className={cn('mt-0.5 size-5 shrink-0', color)} aria-hidden="true" />
               <div className="min-w-0 flex-1">

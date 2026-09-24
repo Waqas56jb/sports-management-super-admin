@@ -2,7 +2,7 @@ import { useI18n } from '@/i18n';
 import { cn } from '@/utils/cn';
 
 export function Skeleton({ className, style }) {
-  return <div className={cn('animate-pulse rounded-md bg-surface-3', className)} style={style} aria-hidden="true" />;
+  return <div className={cn('skeleton rounded-md', className)} style={style} aria-hidden="true" />;
 }
 
 export function CardSkeleton({ className, lines = 3 }) {

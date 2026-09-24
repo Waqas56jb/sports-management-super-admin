@@ -69,7 +69,13 @@ export default function AuthLayout({ children }) {
         </div>
       </aside>
 
-      <main className="relative flex flex-col bg-page">
+      <main className="safe-top relative isolate flex flex-col overflow-hidden">
+        {/* Phones and tablets: soft brand light behind the form (the desktop has the side panel). */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[460px] lg:hidden" aria-hidden="true">
+          <div className="absolute -left-28 -top-36 size-[400px] rounded-full bg-brand-400/25 blur-3xl dark:bg-brand-500/20" />
+          <div className="absolute -right-32 -top-12 size-[340px] rounded-full bg-sky-400/20 blur-3xl dark:bg-sky-500/10" />
+          <div className="pitch-lines absolute inset-0 opacity-[0.35] [mask-image:linear-gradient(to_bottom,black,transparent)] dark:opacity-100" />
+        </div>
         <div className="flex items-center justify-between gap-3 p-4 sm:p-6">
           <BrandLogo className="lg:invisible" />
           <div className="flex items-center gap-1">
@@ -77,8 +83,8 @@ export default function AuthLayout({ children }) {
             <LanguageSwitcher variant="pill" />
           </div>
         </div>
-        <div className="flex flex-1 items-center justify-center px-4 pb-10 sm:px-6">
-          <div className="w-full max-w-[420px]">{children}</div>
+        <div className="flex flex-1 items-center justify-center px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:px-6">
+          <div className="glass w-full max-w-[440px] rounded-[1.75rem] border border-white/70 p-5 shadow-(--shadow-pop) sm:p-8 dark:border-white/10 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none">{children}</div>
         </div>
       </main>
     </div>

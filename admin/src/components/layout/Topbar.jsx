@@ -32,8 +32,8 @@ export default function Topbar({ onMenu, onSearch, onLogout }) {
   }, [onSearch]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-surface/90 backdrop-blur-lg no-print">
-      <div className="flex h-16 items-center gap-2 px-3 sm:gap-3 sm:px-6">
+    <header className="glass safe-top sticky top-0 z-30 border-b border-line/70 no-print">
+      <div className="flex h-14 items-center gap-2 px-3 sm:h-16 sm:gap-3 sm:px-6">
         <button type="button" onClick={onMenu} className="grid size-10 place-items-center rounded-xl text-ink-2 hover:bg-surface-3 lg:hidden" aria-label={t('nav.openMenu')}>
           <Menu className="size-5" />
         </button>

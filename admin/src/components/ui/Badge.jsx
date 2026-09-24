@@ -37,14 +37,17 @@ export default function Badge({ tone = 'neutral', dot = false, className, childr
   );
 }
 
-/** Translated status pill: <StatusBadge value="active" /> */
-export function StatusBadge({ value, className }) {
+/**
+ * Translated status pill: <StatusBadge value="active" />.
+ * `compact` shows only the coloured dot on phones (the label stays available to screen readers).
+ */
+export function StatusBadge({ value, className, compact = false }) {
   const { t } = useI18n();
   if (!value) return null;
   const tone = STATUS_TONES[value] ?? 'neutral';
   return (
-    <Badge tone={tone} dot className={className}>
-      {t(`status.${value}`)}
+    <Badge tone={tone} dot className={cn(compact && 'max-sm:w-6 max-sm:justify-center max-sm:gap-0 max-sm:px-0', className)}>
+      <span className={cn(compact && 'max-sm:sr-only')}>{t(`status.${value}`)}</span>
     </Badge>
   );
 }

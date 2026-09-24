@@ -73,7 +73,7 @@ export default function Modal({ open, onClose, title, description, size = 'md', 
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6">
-      <div className="absolute inset-0 animate-fade-in bg-slate-950/50 backdrop-blur-[2px]" onClick={() => dismissible && onClose?.()} aria-hidden="true" />
+      <div className="absolute inset-0 animate-fade-in bg-slate-950/45 backdrop-blur-sm" onClick={() => dismissible && onClose?.()} aria-hidden="true" />
       <div
         ref={panelRef}
         role={role}
@@ -82,11 +82,12 @@ export default function Modal({ open, onClose, title, description, size = 'md', 
         aria-describedby={description ? descId : undefined}
         tabIndex={-1}
         className={cn(
-          'relative flex max-h-[92dvh] w-full animate-slide-up flex-col rounded-t-2xl border border-line bg-surface shadow-(--shadow-pop) outline-none sm:max-h-[88dvh] sm:rounded-2xl',
+          'relative flex max-h-[92dvh] w-full animate-slide-up flex-col rounded-t-[1.75rem] border border-line bg-surface shadow-(--shadow-pop) outline-none sm:max-h-[88dvh] sm:rounded-3xl',
+          !footer && 'safe-bottom',
           SIZES[size],
         )}
       >
-        <div className="mx-auto mt-2.5 h-1.5 w-10 shrink-0 rounded-full bg-line-strong sm:hidden" aria-hidden="true" />
+        <div className="mx-auto mt-2.5 h-1.5 w-11 shrink-0 rounded-full bg-line-strong/80 sm:hidden" aria-hidden="true" />
         {(title || dismissible) && (
           <div className="flex items-start justify-between gap-4 px-5 pb-3 pt-3 sm:px-6 sm:pt-5">
             <div className="min-w-0">

@@ -67,9 +67,9 @@ export default function LoginPage() {
             required
             {...form.field('password')}
           />
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0">
             <Checkbox label={t('auth.remember')} checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-            <Link to="/admin/forgot-password" className="inline-flex min-h-11 items-center text-sm font-medium text-brand-700 hover:underline dark:text-brand-300 sm:min-h-0">
+            <Link to="/admin/forgot-password" className="inline-flex min-h-10 items-center text-sm font-semibold text-brand-700 hover:underline dark:text-brand-300 sm:min-h-0">
               {t('auth.forgot')}
             </Link>
           </div>

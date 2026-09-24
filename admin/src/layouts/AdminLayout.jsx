@@ -69,8 +69,8 @@ export default function AdminLayout() {
 
       {drawerOpen && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label={t('nav.main')}>
-          <div className="absolute inset-0 animate-fade-in bg-slate-950/60" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
-          <div ref={drawerRef} className="relative h-full w-[min(20rem,86vw)] animate-slide-in-left shadow-2xl">
+          <div className="absolute inset-0 animate-fade-in bg-slate-950/50 backdrop-blur-sm" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
+          <div ref={drawerRef} className="relative h-full w-[min(20rem,86vw)] animate-slide-in-left overflow-hidden rounded-r-[1.75rem] bg-[#0b1220] shadow-2xl safe-top">
             <Sidebar onNavigate={() => setDrawerOpen(false)} onLogout={handleLogout} />
           </div>
         </div>
@@ -78,10 +78,12 @@ export default function AdminLayout() {
 
       <div className="lg:pl-64">
         <Topbar onMenu={() => setDrawerOpen(true)} onSearch={openSearch} onLogout={handleLogout} />
-        <main id="main" ref={mainRef} tabIndex={-1} className="mx-auto w-full max-w-[1600px] px-4 pb-28 pt-5 outline-none sm:px-6 sm:pt-6 md:pb-10 lg:px-8">
+        <main id="main" ref={mainRef} tabIndex={-1} className="mx-auto w-full max-w-[1600px] px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))] pt-5 outline-none sm:px-6 sm:pt-7 md:pb-12 lg:px-8">
           <RouteErrorBoundary key={pathname}>
             <Suspense fallback={<PageSkeleton />}>
-              <Outlet />
+              <div key={pathname} className="animate-page-in">
+                <Outlet />
+              </div>
             </Suspense>
           </RouteErrorBoundary>
         </main>

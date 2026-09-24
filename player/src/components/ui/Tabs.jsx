@@ -21,13 +21,13 @@ export default function Tabs({ tabs, value, onChange, className, size = 'md', la
   };
 
   return (
-    <div className={cn('max-w-full overflow-x-auto no-scrollbar', className)}>
+    <div className={cn('max-w-full overflow-x-auto no-scrollbar max-sm:[mask-image:linear-gradient(to_right,black_calc(100%-28px),transparent)] max-sm:pr-6', className)}>
       <div
         ref={listRef}
         role="tablist"
         aria-label={label}
         onKeyDown={onKeyDown}
-        className={cn('inline-flex items-center gap-1 rounded-xl bg-surface-3 p-1', fill && 'flex w-full')}
+        className={cn('inline-flex items-center gap-1 rounded-2xl bg-surface-3/80 p-1 ring-1 ring-inset ring-line/60', fill && 'flex w-full')}
       >
         {tabs.map((tab) => {
           const active = tab.value === value;
@@ -41,10 +41,10 @@ export default function Tabs({ tabs, value, onChange, className, size = 'md', la
               tabIndex={active ? 0 : -1}
               onClick={() => onChange(tab.value)}
               className={cn(
-                'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-colors',
+                'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium transition-[background-color,color,box-shadow] duration-200',
                 size === 'sm' ? 'h-8 px-3 text-xs' : 'h-10 px-3.5 text-sm sm:h-9',
                 fill && 'flex-1',
-                active ? 'bg-surface text-ink shadow-sm' : 'text-ink-3 hover:text-ink',
+                active ? 'bg-surface text-ink shadow-[0_1px_2px_rgb(16_24_40/0.08),0_2px_6px_-2px_rgb(16_24_40/0.08)] dark:bg-surface-2' : 'text-ink-3 hover:text-ink',
               )}
             >
               {Icon && <Icon className="size-4" aria-hidden="true" />}

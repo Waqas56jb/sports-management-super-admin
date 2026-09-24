@@ -135,7 +135,7 @@ export default function PlayersPage() {
                     sub={`${t(`positions.${p.position}`)} · ${p.team?.name ?? t('players.noTeam')}`}
                   />
                 </div>
-                <StatusBadge value={p.status} className="hidden min-[400px]:inline-flex" />
+                <StatusBadge value={p.status} compact />
                 <span onClick={(e) => e.stopPropagation()}>
                   <RowActions items={actionsFor(p)} />
                 </span>
