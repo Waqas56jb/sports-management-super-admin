@@ -86,8 +86,8 @@ function Register({ session, onSaved }) {
             {session.register.map(({ player }) => {
               const row = rows[player.id] ?? {};
               return (
-                <li key={player.id} className="flex flex-col gap-3 px-4 py-3 sm:px-5 lg:flex-row lg:items-center">
-                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                <li key={player.id} className="flex flex-wrap items-center gap-3 px-4 py-3 sm:px-5">
+                  <div className="flex min-w-52 flex-1 items-center gap-3">
                     <span className="w-6 text-center font-display text-lg font-bold text-ink-3 tabular">{player.jersey_number ?? '–'}</span>
                     <Avatar name={player.name} src={player.photo} size="sm" />
                     <div className="min-w-0">
@@ -95,7 +95,7 @@ function Register({ session, onSaved }) {
                       <p className="text-xs text-ink-3">{t(`positions.${player.position}`)}</p>
                     </div>
                   </div>
-                  <div role="radiogroup" aria-label={`${t('common.status')} — ${player.name}`} className="grid grid-cols-4 gap-1.5 lg:w-[360px]">
+                  <div role="radiogroup" aria-label={`${t('common.status')} — ${player.name}`} className="grid w-full grid-cols-4 gap-1.5 sm:w-[340px]">
                     {ATTENDANCE_STATUSES.map((s) => (
                       <button
                         key={s}
@@ -119,7 +119,7 @@ function Register({ session, onSaved }) {
                       disabled={!editable}
                       placeholder={t('training.detail.notesPlaceholder')}
                       aria-label={`${t('training.detail.notes')} — ${player.name}`}
-                      className="field-control lg:w-48"
+                      className="field-control basis-full"
                     />
                   )}
                 </li>

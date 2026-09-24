@@ -185,6 +185,7 @@ export default function GlobalSearch({ open, onClose }) {
             placeholder={t('search.placeholder')}
             className="h-14 min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-ink-3"
             role="combobox"
+            aria-label={t('search.title')}
             aria-expanded={flat.length > 0}
             aria-controls="global-search-results"
             aria-activedescendant={flat.length ? `gs-${active}` : undefined}

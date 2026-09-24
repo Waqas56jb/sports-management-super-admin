@@ -1,6 +1,6 @@
 export default {
   app: {
-    tagline: 'Administration fédérale',
+    tagline: 'Console fédérale',
   },
   common: {
     search: 'Rechercher',
